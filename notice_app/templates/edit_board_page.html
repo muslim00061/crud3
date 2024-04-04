@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './css/style.css' %}">
+</head>
+<body>
+    <header class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container">
+          <a class="navbar-brand" href="#">Boardify</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home_page' %}">Все объявления</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_board_page' %}">Добавить</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </header>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input, textarea {
+            display: block;
+            width: 100%;
+            border: 1px solid #000;
+            border-radius: 15px;
+            padding: 20px;
+        }
+    </style>
+    <div class="container pt-5">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5 class="card-title">Редактировать объявление</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="mt-5 btn btn-primary">Редактировать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
