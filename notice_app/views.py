@@ -1,6 +1,9 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import Category,Board
 from .forms import AddBoardForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate, logout
+from .forms import NewUserForm
 
 
 def home_page(requeset):
@@ -64,4 +67,43 @@ def edit_board_page(request, pk):
     }
 
     return render(request, "./edit_board_page.html", context)
+
+def sign_up_page(request):
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login_page")
+
+    else:
+        form = NewUserForm()
+
+    context = {
+        'form': form
+    }
+
+    return render(request,"./sign_up.html", context)
+
+
+def login_page(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request,user)
+                return redirect("home_page")
+    else:
+        form=AuthenticationForm
+
+    context = {
+        'form': form
+    }
+    return render(request, "./login.html", context)
+
+def logout_request(request):
+    logout(request)
+    return redirect("home_page")
 
